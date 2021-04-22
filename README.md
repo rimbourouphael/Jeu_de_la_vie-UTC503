@@ -4,6 +4,7 @@ Application qui possède des regles de vie ou de mort:
         - Si 4 a 8 cellules voisines en vie = mort par surpopulation
 
 Il existe 2 files .py :
+
         - JeuDeLaVie.py:
             C'est la class main qui permet de commencer le jeu
         - grille.py :
