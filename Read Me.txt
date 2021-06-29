@@ -1,0 +1,146 @@
+Application qui possède des regles de vie ou de mort:
+
+        - Si 0 ou 1 cellule voisine  en vie = mort par isolement
+        - Si 4 a 8 cellules voisines en vie = mort par surpopulation
+
+Il existe 2 files .py :
+
+        - JeuDeLaVie.py:
+            C'est la class main qui permet de commencer le jeu
+        - grille.py :
+            C'est la class creant le cadre du jeu et toutes les fonctions principales permettant le bon déroulement 
+
+Les principales fonctions  de grilles.py:
+	
+        -constructeur : 
+		Prend comme paramètre la fenêtre (Tk()) ;
+		Initialisation de Var_coord : variable où on va placer les coordonnées ligne et colonne de la case de la grille lors du survol de la souris ;
+		Initialisation  grille ;
+		Appel de la fonction activationEvenenment() ;
+		Appel de la fonction getGrille() ;
+	 
+        -activationEvenenment
+                activer les évenements des fonctions ;
+		souris_survol : lors du survol de la souris autour de la grille(affichage des coordonnées de la case) ;
+		creerCellule : lors du click de la souris sur n’importe quelles cases (on va créer une cellule en vie)
+		supprimercellule : lors du right click de n’importe quelles cases (on supprime une cellule en vie => elle devient morte) ;
+
+        -initialisation
+                initialisation des variables utilisées
+		vittesse : vitesse entre le changement ;
+		drapeau : variable permettant d’arreter ou de commencer le jeu ;
+		tailleCellule : taille de la cellule ;
+		canvasHeight , canvasWidth : longueur et largeur de la grille ;
+		nb_cellule : nombre de cellule présent dans la grille
+		self.cellule_en_vie : dictionnaire des cellule en vie
+	       	self.cellule_en_vie_t1 : dictionnaire des cellules en vie au temps t+1
+		self.examen : dictionnaire des cellules deje examinees
+        	self.cell_voisines : dictionnaire des cellules voisines de chaque cellule en vie
+
+        -getGrille
+                retourner la grille créer
+
+        -creerGrille
+                creation de la grille
+		appel de la fonction createLine (fonction prédéfinie) et creation des ligne horizontales puis des ligne verticales	
+
+        -coords_lig_col
+                donner les coordonées des lignes et colonnes lors du survol de la souris sur la grille
+	
+        -creerCellule
+                creation des cellules de vie
+	Appel de la fonction create_rectangle et création d’une cellule en vie
+
+        -supprimercellule
+                supprimer une cellule (par right click)
+	Appel de la fonction delete et supprssion d’une cellule en vie (devien cellule morte) puis suppression de cette cellule du dictionnaire des cellules en 	vie cellule_en_vie ;
+
+        -cell_voisine
+                scanner toutes les cellules voisines d'une cellule en vie
+		Recherche des cellules voisines et compter le nombre des cellules en vie.
+	       	Les cles des cellules voisines sont stockees dans <self.cell_voisines>
+        	Les Parametre <test>:
+           		- True si on recherche les voisines des cellules en vie
+           		- False si on recherche les voisines des voisines des cellules en vie
+        
+
+        -vie-ou_mort
+                decision de la vie ou mort de la cellule
+		Application des regles de vie ou de mort:
+        		- 0 ou 1 cellule voisine  en vie = mort par isolement
+       	 - 4 a 8 cellules voisines en vie = mort par surpopulation
+          	Dans ces cas la cellule n'est pas ecrite dans <cellule_en_vie_t1>
+
+
+        -change_vit
+                changer la vitesse d'evolution du jeu
+		prend en paramètre un evenement(l’evenement Return) et l’entree qui est la nouvelle vitesse
+
+        -souris_survol
+                Afficher les coordonnées ligne/colonne de la souris lors de son survol au-dessus de la grille 
+		Prend en paramètre un evenement (qui est l’evenement Motion )
+
+        -start
+                creation des cellules si aucune cellule n'a été creer par intervention humaine ;
+		Affectation du drapeau a 1
+		Creation de cellule vivantes après verification qu’aucune cellule vivante existe Sinon appel de la fonction go();
+        -stop
+                stoper le jeu apres affection du drap a 0 ;
+        -go
+                demarrage du jeu après l'avoir stopper
+		Si aucune cellule n’est créer et si le drap est egal a 0 : affectation du drap a 1 et appel de la fonction generation()
+        -restart
+                redemarrer le jeu de nouveau 
+		Suppression de la grille actuelle
+		Appel de la fonction initialisation ()
+		Et return de la nouvelle grille créé grace a la fonction getGrille()
+
+        -generations
+                fonctionner permettant le déroulement continu du jeu
+                scan les cellule voisine et decide si la cellule dit mourir ou non 
+                Si drap == 1 
+		Appel de la function start()
+		Parcours du dictionnaire cellule_en_vie et affection du dictionnaire de leur ligne et collonne au dictionnaire examen , puis compter le nombre de 		cellule voisine pour apres decider sa vie ou sa mort par appel de la fonction vie_ou_mort();
+		Examen des cellule voisines de chaque cellule en vie si cette cellule voisines n’est pas dans le dictionnaire examen ;
+		Suppression de la cellue en vie qui possede le tag « vie » au temps t ;
+		Creation des cellule en vies au temps t+1 ;
+		Generation du nouvelle dictionnaires cellule_en_vie , cellule_en_vie_t1 , examen , cell_voisines.
+______________________________________________________________________________________________________________________________________________________________
+Dans la class JeuDeLaCie.py
+
+	-Importation de grille de la classe Grille 
+	-Creation du frame = Tk()
+	-Ajustation de la longueur et largeur
+	-Center_window
+		Prend en parametre 2 paramètre width and height et permet de positionner le frame au centre de l’ecran
+	-Start
+		Appel la fonction generation() de la classe grille
+		Supprime le bouton start  et fait apparaitre seulement le bouton stop
+	-Stop
+		Appel la fonction stop de la classe Grille
+		Fait disparaitre le bouton stop et fait apparaitre le bouton go et restart
+	-Go
+		Appel la fonction go puis generation de la classe Grille
+		Fait disparaitre le bouton start , go et restart
+		Fait apparaitre le bouton stop
+	-Restart
+		Appel la fonction restart de la classe Grille
+		Supprime la vitesse que l’utilisateur a choisi (entree)
+		Fait apparaitre le bouton start et fait disparaitre les boutons stop, go et restart
+	-Creation de la grille par appel du constructeur avec le parametre frame créer
+	-Grille2 = appel la fonction getGrille pour que la grille apparet
+	-Creation des 4 boutons start , go , stop et restart
+	-Création du cadre contenant les coordonnée des lignes et colonnes lors du survol de la souris
+		L_infos     :  le cadre contenant l’espace coordonnee et vitesse 
+		L_Coord : le cadre contenant les coordonnées ligne et colonne
+		C_Coord : contient les coordonnées ligne et colonne de la variable Var_coord
+	-L_vitesse = LabelFrame(L_infos,text = " Vitesse ")
+		entree = Entry(L_vitesse) (comme textField en java)
+		entree.bind("<Return>", lambda event: grille.change_vit(event,entree)) : envoi de la nouvelle vitesse vers la class Grille par la fonction change_vit
+		chaine  le Label de L_vitesse 
+		chaine.configure : affin de mettre le label «  Attente entre les etapes (ms) »
+	-Ajout de toute les composant dans le frame
+	-Centrer le frame au centre par la fonction center_window
+	-Créer le titre du frame « Jeu De La Vie »
+	-Ajustation du background du frame
+	-Appel du mainloop pour demarer le jeu.
